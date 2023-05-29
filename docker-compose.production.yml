@@ -1,36 +1,36 @@
 version: '3'
 
 volumes:
-  pg_data_kittygram_production:
-  kittygram_static:
+  pg_data_production:
+  static:
   media:
 
 services:
   db:
     image: postgres:13
-    env_file: .env
     volumes:
-      - pg_data_kittygram_production:/var/lib/postgresql/data
+      - pg_data_production:/var/lib/postgresql/data
+    env_file: .env
+
   backend:
     image: coolhaxor/kittygram_backend
     env_file: .env
     volumes:
-      - kittygram_static:/backend_static
-      - media:/app/media
-    depends_on:
-      - db
+      - static:/backend_static
+      - media:/app/media/
+
   frontend:
-    env_file: .env
     image: coolhaxor/kittygram_frontend
+    env_file: .env
+    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - kittygram_static:/static
-    command: cp -r /app/build/. /static/
-    
+      - static:/frontend_static
+
   gateway:
     image: coolhaxor/kittygram_gateway
     env_file: .env
     ports:
-      - 9000:80
+      - ${DOCKER_PORTS}
     volumes:
-      - kittygram_static:/static
-      - media:/media
+      - static:/staticfiles
+      - media:/app/media/
