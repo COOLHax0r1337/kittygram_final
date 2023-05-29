@@ -30,7 +30,7 @@ services:
     image: coolhaxor/kittygram_gateway
     env_file: .env
     ports:
-      - ${DOCKER_PORTS}
+      - 9000:80
     volumes:
       - static:/staticfiles
       - media:/app/media/
