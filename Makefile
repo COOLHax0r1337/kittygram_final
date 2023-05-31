@@ -5,5 +5,8 @@ build_statics:
 migrate: build_statics
 	docker compose exec backend python manage.py migrate
 
+superuser:
+	docker compose exec backend python manage.py createsuperuser
+
 run_docker:
 	docker compose up -d
